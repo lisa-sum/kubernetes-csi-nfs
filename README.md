@@ -73,6 +73,19 @@ NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM          
 nfs-claim1   1Gi        RWO            Retain           Bound    default/nfs-claim1   nfs-csi        <unset>                          3m54s
 ```
 
+## 清理
+清理测试用例:
+```shell
+cd kubernetes-csi-nfs
+kubectl delete -f ./test
+```
+
+完全清理本分布式存储:
+```shell
+cd kubernetes-csi-nfs
+kubectl delete -f .
+```
+
 ## 错误处理
 
 自行检测以下问题:
