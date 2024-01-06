@@ -25,6 +25,7 @@ firewall-cmd  --reload
 cat >> /etc/exports << EOF
 /mnt/data/ 192.168.2.155(rw,async,no_root_squash)
 /mnt/data/ 192.168.2.158(rw,async,no_root_squash)
+/mnt/data/ 192.168.2.160(rw,async,no_root_squash)
 /mnt/data/ 192.168.2.100(rw,async,no_root_squash)
 /mnt/data/ 192.168.2.101(rw,async,no_root_squash)
 /mnt/data/ 192.168.2.102(rw,async,no_root_squash)

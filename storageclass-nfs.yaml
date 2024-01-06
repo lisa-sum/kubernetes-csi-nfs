@@ -7,8 +7,8 @@ metadata:
   name: nfs-csi
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: 192.168.2.220
-  share: /apps/data/
+  server: 192.168.2.152
+  share: /mnt/data/
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 allowVolumeExpansion: true

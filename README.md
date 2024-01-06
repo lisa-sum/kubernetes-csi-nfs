@@ -32,25 +32,50 @@ kubectl apply -f .
 kubectl -n clusterstorage get pod -owide
 ```
 
-示例的PV:
-```yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: data-consul-consul-server-0  # PV的名称
-spec:
-  capacity:
-    storage: 10Gi  # 存储容量
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain  # 回收策略
-  storageClassName: nfs-csi  # 存储类名称
+## 测试
+```shell
+kubectl get sc
 ```
 
-# 修改csi-nfs-controller.yaml csi-nfs-node.yaml  pods-mount-dir registration-dir socket-dir kubelet-registration-path 等参数 修改路径对应kubelet volume-plugin-dir 参数
-# 部署nfs storageClass kubectl apply -f .
-# 测试 能自己创建pvc 并成功写入文件 kubectl apply -f test/.
-# service nfslock start
-# systemctl enable nfslock.service
+示例输出:
+```
+NAME                PROVISIONER      RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+nfs-csi (default)   nfs.csi.k8s.io   Delete          Immediate           true                   7m7s
+```
 
+运行测试:
+```shell
+kubectl apply -f ./test
+```
+
+查看测试结果, 如果`test-nfs-pod`这个Pod的状态为`Completed`则表示测试成功:
+```shell
+kubectl describe po test-nfs-pod
+```
+
+查看PVC是否绑定:
+```shell
+kubectl get pvc
+```
+
+```
+NAME         STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+nfs-claim1   Bound    nfs-claim1   1Gi        RWO            nfs-csi        <unset>                 3m13s
+```
+
+查看PV是否创建:
+```shell
+kubectl get pvc
+```
+
+```
+NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+nfs-claim1   1Gi        RWO            Retain           Bound    default/nfs-claim1   nfs-csi        <unset>                          3m54s
+```
+
+## 错误处理
+
+自行检测以下问题:
+1. 没有在控制平面节点安装NFS服务
+2. 没有在工作节点安装NFS客户端库
+3. 没有在`storageclass-nfs.yaml`文件的`server`和`path`改成自己`nfs服务器`配置
