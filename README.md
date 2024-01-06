@@ -1,11 +1,17 @@
-# 创建命名空间
+# Kubernetes分布式存储
+
+## 前置
+1. [在Linux部署NFS的服务](https://juejin.cn/post/7317260317620240447)
+2. 至少2台机器
+
+## 创建命名空间
 ```shell
 kubectl create namespace clusterstorage
 ```
 
-# nfs storageClass 部署
+## nfs storageClass 部署
 
-修改storageclass-nfs.yaml server path 改成自己nfs 服务器配置, 例如
+修改`storageclass-nfs.yaml`文件的`server`和`path`改成自己`nfs服务器`配置, 例如:
 ```yaml
 ...
 parameters:
@@ -18,7 +24,7 @@ parameters:
 
 启动
 ```shell
-kubectl apply .
+kubectl apply -f .
 ```
 
 查看

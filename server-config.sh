@@ -1,8 +1,8 @@
 #!/bin/sh
+set -x
 
 apt install -y nfs-kernel-server #安装nfs服务
-apt install -y rpcbind #安装rpc服务
-
+apt install -y nfs-common
 # 创建共享目录
 mkdir -p /mnt/data
 
@@ -38,3 +38,5 @@ systemctl status nfs-kernel-server #nfs
 
 # 用来察看 NFS 分享出来的目录资源
 showmount -e 192.168.2.152
+
+set +x
